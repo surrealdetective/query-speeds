@@ -1,4 +1,7 @@
 Query::Application.routes.draw do
+  resources :categories
+
+
   resources :artifacts
 
 
