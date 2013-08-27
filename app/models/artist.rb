@@ -3,4 +3,5 @@ class Artist < ActiveRecord::Base
 
   has_many :artifacts
   has_many :categories, :through => :artifacts
+  has_many :commissions
 end

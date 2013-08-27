@@ -3,7 +3,6 @@ task :benchmark => :environment do
   require 'benchmark'
   include Benchmark
 
-  n = 50_000
   def loops
     Artifact.all.each do |artifact|
       "A work of art in #{artifact.media} by #{artifact.artist.name}"
