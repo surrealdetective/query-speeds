@@ -6,7 +6,7 @@ namespace :db do
 
     [Artist, Artifact, Category].each(&:delete_all)
 
-    Category.populate 100 do |category|
+    Category.populate 500 do |category|
       category.name = Populator.words(1..2).titleize
       Artifact.populate 10..100 do |artifact|
         artifact.category_id = category.id
@@ -20,6 +20,12 @@ namespace :db do
       end
     end
 
-
+    artists = Artist.all
+    c_times = artists.count/10
+    Commission.populate c_times do |com|
+      com.description = Populator.sentences(2..5)
+      com.price       = (25..10000)
+      com.artist_id   = artists.sample.id
+    end 
   end  
 end
