@@ -1,0 +1,8 @@
+<% @bm_test = [["includes", 7.598167], ["loops", 43.165145], ["joins", 43.370565]] %>
+        <p><em>Winner: Includes</em></p>
+        <dl>
+          <% @bm_test.each do |qry| %>
+            <dt><%= qry.first.titleize %>:</dt> 
+            <dd><%= number_to_human(qry.last) %> seconds</dd>
+          <% end %>
+        </dl>

@@ -3,6 +3,7 @@ namespace :bm do
   task :one_class_large_intersection => :environment do
     require 'benchmark'
     include Benchmark
+    include RakeHelper
 
     def art(artifact)
       "A work of art in #{artifact.media}"
@@ -28,10 +29,13 @@ namespace :bm do
     end
 
     puts "ARTIFACTS"
-    Benchmark.benchmark(CAPTION, 7, FORMAT) do |x|
+    bm_t = Benchmark.benchmark(CAPTION, 7, FORMAT) do |x|
       tl = x.report("loops:")    { loops }
       tj = x.report("joins:")    { joins }
       ti = x.report("includes:") { includes }
     end
+    
+    bm_hash = parse_times(bm_t).sort_by{ |k,v| v }
+    write_partial('_scenario_one.html.erb', bm_hash)
   end  
 end

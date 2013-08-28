@@ -3,6 +3,7 @@ namespace :bm do
   task :two_class_small_intersection => :environment do
     require 'benchmark'
     include Benchmark
+    include RakeHelper
 
     def artist_w_com(artist)
       artist.name
@@ -33,10 +34,13 @@ namespace :bm do
     end
 
     puts "ARTISTS WITH COMMISSIONS AND COMMISSION ATTRIBUTES"
-    Benchmark.benchmark(CAPTION, 7, FORMAT) do |x|
+    bm_test = Benchmark.benchmark(CAPTION, 7, FORMAT) do |x|
       tl = x.report("loops:")    { loops }
       tj = x.report("joins:")    { joins }
       ti = x.report("includes:") { includes }
     end
+
+    bm_hash = parse_times(bm_test).sort_by{ |k,v| v }
+    write_partial('_scenario_four.html.erb', bm_hash)
   end  
 end
