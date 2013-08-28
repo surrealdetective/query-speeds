@@ -19,10 +19,11 @@
         <%= render 'session/scenario_two.html.erb' %>
       </div>
       <div class="situation span8">
-        <h4 class="situation-header">More About the Models</h4>
-        <p>Artifact and Artist are connected through an Active Record Association. Artifact belongs to Artist, and Artist has many Artifacts. Furthermore, because of how data in this database is structured, every artifact has an artist, and every artist has an artifact.</p>
+        <h4 class="situation-header">More About the Results</h4>
+        <p>To find all artists, loop does the least work necessary. By contrast, join additionally links an extra table, and includes fetches all the data from the other table, which can take a while. 
+        Scenario 1 demonstrates that when all you really need is the info from one model, loops are the fastest, as doing more is superfluous.</p>
         
-        <p>Therefore the number of artifacts that are associated with an artist equals the the total number of artifacts. As you'll see, this has an impact on the effectiveness of a query method.</p>
+        <p>However, when you need data from two models, includes is the best. Includes is significantly faster because it doesn't need to perform additional database queries to fetch data, as the data it needs is already loaded.</p>
       </div>
     </div>
 
@@ -39,10 +40,10 @@
         <%= render 'session/scenario_four.html.erb' %>
       </div>
       <div class="situation span8">
-        <h4 class="situation-header">More About the Models</h4>
-        <p>Artist and Commission are connected through an Active Record Association. Commission belongs to Artist, and Artist has many commissions. However, unlike the case with artifacts and artists, <em>not</em> every artist has a commission.</p>
+        <h4 class="situation-header">More About the Results</h4>
+        <p>Joins can be a good decision over loops, even if you're only looking for one model's data. A joins query ignores model instances that lack that 2nd model as an association. For instance, the joins method here quickly finds artists with commissions and ignores those without.</p>
         
-        <p>Therefore the number of artists that are associated with a commission is significantly less than the total number of artists. This impacts the effectiveness of a query method.</p>
+        <p>When fetching data from 2 models, includes wins by a long shot in terms of speed. Just as before, it grabs all the data in one query, thus avoiding expesive query calls in the future when it needs that data. </p>
       </div>
 
     </div>
@@ -50,12 +51,29 @@
 <!-- ********************************************************* -->
 
     <h2>You selected...</h2>
-    <h4><em>Loops, Joins, or Includes?</em></h4>
-    <%= form_tag session_path, method: "get" do %>
+    <dl>
+      <% @selected_queries.each_with_index do |qry, i| %>
+        <div class="s-select">
+          <dt class="center"><%= "Scenario #{i + 1}" %></dt>
+          <dd class="post-select center"><%= qry %></dd>
+        </div>
+      <% end %>
+    </dl>
 
-      <div id="s-submit">
-      <%= submit_tag "See Results", :class => "btn btn-large btn-block btn-primary", :id => 's-submit' %>
-      </div>
+    <% if flash[:notice] %>
+
+      <%= form_tag sessions_path, method: "post" do %>
+
+        <div id="s-submit">
+        <%= submit_tag "Get New Query Times (this may take a while)", :class => "btn btn-large btn-block btn-primary", :id => 's-submit' %>
+        </div>
+
+        <span id="or">OR</span>
+
+        <div id="s-submit">
+          <%= link_to "Go Back", new_session_path, :class => "btn btn-large btn-block btn-inverse", :id => 's-submit' %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
