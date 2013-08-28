@@ -11,8 +11,8 @@ class SessionController < ApplicationController
   end
 
   def create
-    call_rake(:queries)
-    flash[:notice] = "Running queries... please refresh this page in 20 minutes"
+    system "rake queries" # &" should spin a new rails env to run rake task, but & not yet working. Also see call_rake method. 
+    flash[:notice] = "Thanks for waiting! Please note the new times!"
     redirect_to session_path
   end
 

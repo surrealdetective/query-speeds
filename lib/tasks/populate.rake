@@ -6,7 +6,7 @@ namespace :db do
 
     [Artist, Artifact, Category].each(&:delete_all)
 
-    Category.populate 1000 do |category|
+    Category.populate 100 do |category|
       category.name = Populator.words(1..2).titleize
       Artifact.populate 10..100 do |artifact|
         artifact.category_id = category.id
@@ -19,5 +19,7 @@ namespace :db do
         end
       end
     end
+
+
   end  
 end

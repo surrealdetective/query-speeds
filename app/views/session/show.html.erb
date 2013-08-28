@@ -50,30 +50,29 @@
 
 <!-- ********************************************************* -->
 
-    <h2>You selected...</h2>
-    <dl>
-      <% @selected_queries.each_with_index do |qry, i| %>
-        <div class="s-select">
-          <dt class="center"><%= "Scenario #{i + 1}" %></dt>
-          <dd class="post-select center"><%= qry %></dd>
-        </div>
-      <% end %>
-    </dl>
+    <% if @selected_queries.reject{ |e| e.blank?}.present? %>
+      <h2>You selected...</h2>
+      <dl>
+        <% @selected_queries.each_with_index do |qry, i| %>
+          <div class="s-select">
+            <dt class="center"><%= "Scenario #{i + 1}" %></dt>
+            <dd class="post-select center"><%= qry %></dd>
+          </div>
+        <% end %>
+      </dl>
+    <% end %>
 
-    <% if flash[:notice] %>
+    <%= form_tag sessions_path, method: "post" do %>
 
-      <%= form_tag sessions_path, method: "post" do %>
+      <div id="s-submit">
+      <%= submit_tag "Get New Query Times (this may take a while)", :class => "btn btn-large btn-block btn-primary", :id => 's-submit' %>
+      </div>
 
-        <div id="s-submit">
-        <%= submit_tag "Get New Query Times (this may take a while)", :class => "btn btn-large btn-block btn-primary", :id => 's-submit' %>
-        </div>
+      <span id="or">OR</span>
 
-        <span id="or">OR</span>
-
-        <div id="s-submit">
-          <%= link_to "Go Back", new_session_path, :class => "btn btn-large btn-block btn-inverse", :id => 's-submit' %>
-        </div>
-      <% end %>
+      <div id="s-submit">
+        <%= link_to "Go Back", new_session_path, :class => "btn btn-large btn-block btn-inverse", :id => 's-submit' %>
+      </div>
     <% end %>
   </div>
 </div>
