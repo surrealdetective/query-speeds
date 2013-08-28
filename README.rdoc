@@ -1,7 +1,7 @@
-+ Which query is faster?
-+++ Loops, Joins, or Includes?
+Which query is faster?
+Loops, Joins, or Includes?
 
-++ To find out, follow these steps in the command line:
+To find out, follow these steps in the command line:
 
 Note: The repo works with ruby-1.9.3-p429@rails3.2.13
 
