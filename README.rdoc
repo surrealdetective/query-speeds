@@ -1,13 +1,14 @@
-+ Which query is faster?
-+++ Loops, Joins, or Includes?
+Which query is faster?
+Loops, Joins, or Includes?
 
-++ To find out, follow these steps in the command line:
+To find out, follow these steps in the command line:
 
 Note: The repo works with ruby-1.9.3-p429@rails3.2.13
 
 1. git clone git@github.com:surrealdetective/query-speeds.git directory_name
-2. rake db:migrate
-3. rake db:populate
-4. rails s
+2. cd directory_name
+3. rake db:migrate
+4. rake db:populate
+5. rails s
 
 Enjoy!
