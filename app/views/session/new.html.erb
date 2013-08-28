@@ -1,42 +1,136 @@
-<h1>Joins, Includes, or Loops: what's the fastest method?</h1>
+<div>
+  <div style="text-align:center;">
+    <h1>The Faster Query Method</h1>
+    <h4>Loops, Joins, and Includes</h4>
+    <p><em>Gauge their speed in four difference scenarios</em></p>
+  </div>
+  <div class="situations">
+<!-- ********************************************************* -->
 
-<p>Test their speed in three difference scenarios</p>
+    <div class="square-focus">
+      <h3 class="square-header">Scenarios 1 & 2: Index of Artifacts</h3>
+      <div class="data-window span4">
+        <h4>Scenario 1</h4>
+        <p><em>Attributes from one model: Artifact</em></p>
+        <dl>
+          <dt>A work of art in Sculpture</dt>
+          <dd>LIBERO EA ID EAQUE<dd>
 
-<h2>Scenario 1</h2>
-<p>An index of one model</p>
+          <dt>A work of art in Film/Video</dt>
+          <dd>DISTINCTIO VEL</dd>
 
-<h2>Scenario 2</h2>
-<p>An index with attributes from 2 models</p>
+          <dt>A work of art in Drawing</dt>
+          <dd>ALIQUID</dd>
+        </dl>
+      </div>
+      <div class="data-window span4">
+        <h4>Scenario 2</h4>
+        <p><em>Attributes from two models: Artifact & Artist</em></p>
+        <dl>
+          <dt>A work of art in Painting by Ilene Bosco</dt>
+          <dd>SIT UNDE ET</dd>
+  
+          <dt>A work of art in Film/Video by Kevon Jewess</dt>
+          <dd>SOLUTA VOLUPTATE</dd>
+  
+          <dt>A work of art in Sculpture by Afton Mohr</dt>
+          <dd>POSSIMUS QUO</dd>
+        </dl>
+      </div>
+      <div class="situation span8">
+        <h4 class="situation-header">More About the Models</h4>
+        <p>Artifact and Artist are connected through an Active Record Association. Artifact belongs to Artist, and Artist has many Artifacts. Furthermore, because of how data in this database is structured, every artifact has an artist, and every artist has an artifact.</p>
+        
+        <p>Therefore the number of artifacts that are associated with an artist equals the the total number of artifacts. As you'll see, this has an impact on the effectiveness of a query method.</p>
+      </div>
 
-<h2>Scenairo 3</h2>
-<p>An index with attributes from 3 models</p>
+<!-- ARTIFACTS
+              user     system      total        real
+loops:    2.220000   0.040000   2.260000 (  2.261268)
+joins:    2.510000   0.040000   2.550000 (  2.555017)
+includes:  6.800000   0.090000   6.890000 (  6.894096) -->
 
+<!-- ARTIFACTS AND ARTIST NAME
+              user     system      total        real
+loops:   42.680000   1.340000  44.020000 ( 44.227285)
+joins:   42.840000   1.270000  44.110000 ( 44.326189)
+includes:  7.790000   0.080000   7.870000 (  7.914843) -->
 
+    </div>
 
-<h2>Which do you think is fastest?</h2>
+<!-- ********************************************************* -->
+    
+    <div class="square-focus">
+      <h3 class="square-header">Scenarios 3 & 4: Index of Artists</h3>
+      <div class="data-window span4">
+        <h4>Scenario 3</h4>
+        <p><em>Attributes from one model: Artist (w commissions)</em></p>
+        <dl>
+          <dt>Amy Walsh</dt>
+          <dt>Paula Bernier</dt>
+          <dt>Santa Yost</dt>
+          <dt>Nelson Barrows</dt>
+          <dt>Darion Cole</dt>
+          <dt>Tracy Kris</dt>
+          <dt>Kennedy Pollich</dt>
+        </dl>
+      </div>
+      <div class="data-window span4">
+        <h4>Scenario 4</h4>
+        <p><em>Attributes from two models: Artist & Commission</em></p>
+        <dt>Dominic Beatty</dt>
+        <dd>Commission 1: Should be blue</dd>
+        <dd>Price: 17</dd>
+        <dt>Cordie Krajcik</dt>
+        <dd>Commission 1: Et porro est similique...</dd>
+        <dd>Price: 492</dd>
+        <dd>Commission 2: Accusantium nulla accus...</dd>
+        <dd>Price: 2207</dd>
+      </div>
+      <div class="situation span8">
+        <h4 class="situation-header">More About the Models</h4>
+        <p>Artist and Commission are connected through an Active Record Association. Commission belongs to Artist, and Artist has many commissions. However, unlike the case with artifacts and artists, <em>not</em> every artist has a commission.</p>
+        
+        <p>Therefore the number of artists that are associated with a commission is significantly less than the total number of artists. This impacts the effectiveness of a query method.</p>
+      </div>
 
-<a href="/artifacts/one_model">Scenario 1</a>
+<!-- ARTISTS WITH COMMISSIONS
+              user     system      total        real
+loops:  243.460000 143.280000 386.740000 (387.671747)
+joins:    0.420000   0.030000   0.450000 (  0.493153)
+includes:  4.500000   0.050000   4.550000 (  4.675686) -->
 
-<ul>
-  <li>Joins</li>
-  <li>Includes</li>
-  <li>Loops</li>
-</ul>
+<!-- ARTISTS WITH COMMISSIONS AND COMMISSION ATTRIBUTES
+              user     system      total        real
+loops:  264.500000 158.610000 423.110000 (438.416811)
+joins:   27.590000  17.020000  44.610000 ( 52.739276)
+includes:  5.220000   0.060000   5.280000 (  5.738627) -->
 
-<a href="/artifacts/two_model">Scenario 2</a>
+    </div>
 
-<ul>
-  <li>Joins</li>
-  <li>Includes</li>
-  <li>Loops</li>
-</ul>
-
-<a href="/artifacts/three_model">Scenario 3</a>
-
-<ul>
-  <li>Joins</li>
-  <li>Includes</li>
-  <li>Loops</li>
-</ul>
-
-<%= link_to "See Results", session_path %>
+<!-- ********************************************************* -->
+    <h2>Which do you think is fastest...</h2>
+    <h4><em>Loops, Joins, or Includes?</em></h4>
+    <%= form_tag session_path, method: "get" do %>
+      <div class="s-select">
+        <%= label_tag :s1, "Scenario 1 | Artifact" %>
+        <%= select_tag :s1, options_for_select(select_qry) %>
+      </div>
+      <div class="s-select">
+        <%= label_tag :s2, "Scenario 2 | Artifact & Artist" %>
+        <%= select_tag :s2, options_for_select(select_qry) %>
+     </div>
+      <div class="s-select">
+        <%= label_tag :s3, "Scenario 3 | Artist" %>
+        <%= select_tag :s3, options_for_select(select_qry) %>
+      </div>
+      <div class="s-select">
+        <%= label_tag :s4, "Scenario 4 | Artist & Commission" %>
+        <%= select_tag :s4, options_for_select(select_qry) %>
+      </div>
+      <div id="s-submit">
+      <%= submit_tag "See Results", :class => "btn btn-large btn-block btn-primary", :id => 's-submit' %>
+      </div>
+    <% end %>
+  </div>
+</div>

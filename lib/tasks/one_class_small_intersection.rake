@@ -7,7 +7,7 @@ namespace :bm do
     def loops
       Artist.all.each do |artist|
         if artist.commissions.present?
-          artist.name
+          puts artist.name
         end
       end
     end

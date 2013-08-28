@@ -5,8 +5,8 @@ namespace :bm do
     include Benchmark
 
     def artist_w_com(artist)
+      artist.name
       artist.commissions.each_with_index do |com, i|
-        artist.name
         "Commission #{i+1}: #{com.description}"
         "Price: #{com.price}"
       end
