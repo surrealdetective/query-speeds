@@ -1,19 +1,20 @@
 Query::Application.routes.draw do
   
-  get "session/new"
+  get "session/new", :to => "session#new", :as => "new_session"
+  get "session/show", :to => "session#show", :as => "session"
 
   root :to => "session#new"
   get "/artifacts/one_model", :to => "artifacts#one_model", :as => "one_model"
   get "/artifacts/two_model", :to => "artifacts#two_model", :as => "two_model"
   get "/artifacts/three_model", :to => "artifacts#three_model", :as => "three_model"
 
-  resources :categories
+  # resources :categories
 
 
-  resources :artifacts
+  # resources :artifacts
 
 
-  resources :artists
+  # resources :artists
 
 
   # The priority is based upon order of creation:

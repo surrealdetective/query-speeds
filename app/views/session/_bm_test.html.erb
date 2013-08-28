@@ -1,0 +1,6 @@
+<% @bm_test = {"loops"=>1.3e-05, "joins"=>2.657864, "includes"=>7.270738} %>
+        <dl>
+          <% @bm_test.sort_by{ |k,v| v }.each do |qry| %>
+            <li><%= qry.first.titleize %>: <%= number_to_human(qry.last) %> seconds</li>
+          <% end %>
+        </dl>
